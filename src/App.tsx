@@ -90,7 +90,9 @@ type CurrentFilters = {
   selectedWeightCategory: string
   selectedMinAge: number
   showTop100: boolean
-  showGamesWeSell: boolean
+  showRetailGames: boolean // Renamed from showGamesWeSell
+  showPublisherOfTheMonth: boolean // New filter
+  showNewArrivals: boolean // New filter
   showStaffPicks: boolean
   selectedCategories: Array<string>
   selectedMechanisms: Array<string>,
@@ -133,7 +135,9 @@ const GeneralFilterModal = (props: GeneralFilterModalProps) => {
   const [tempSelectedWeightCategory, setTempSelectedWeightCategory] = useState(currentFilters.selectedWeightCategory);
   const [tempSelectedMinAge, setTempSelectedMinAge] = useState(currentFilters.selectedMinAge);
   const [tempShowTop100, setTempShowTop100] = useState(currentFilters.showTop100);
-  const [tempShowGamesWeSell, setTempShowGamesWeSell] = useState(currentFilters.showGamesWeSell);
+  const [tempShowRetailGames, setTempShowRetailGames] = useState(currentFilters.showRetailGames); // Renamed
+  const [tempShowPublisherOfTheMonth, setTempShowPublisherOfTheMonth] = useState(currentFilters.showPublisherOfTheMonth); // New state
+  const [tempShowNewArrivals, setTempShowNewArrivals] = useState(currentFilters.showNewArrivals); // New state
   const [tempShowStaffPicks, setTempShowStaffPicks] = useState(currentFilters.showStaffPicks);
   const [tempSelectedCategories, setTempSelectedCategories] = useState(currentFilters.selectedCategories);
   const [tempSelectedMechanisms, setTempSelectedMechanisms] = useState(currentFilters.selectedMechanisms);
@@ -204,7 +208,9 @@ const GeneralFilterModal = (props: GeneralFilterModalProps) => {
       selectedWeightCategory: tempSelectedWeightCategory,
       selectedMinAge: tempSelectedMinAge,
       showTop100: tempShowTop100,
-      showGamesWeSell: tempShowGamesWeSell,
+      showRetailGames: tempShowRetailGames, // Renamed
+      showPublisherOfTheMonth: tempShowPublisherOfTheMonth, // New state
+      showNewArrivals: tempShowNewArrivals, // New state
       showStaffPicks: tempShowStaffPicks,
       selectedCategories: tempSelectedCategories,
       selectedMechanisms: tempSelectedMechanisms,
@@ -223,7 +229,9 @@ const GeneralFilterModal = (props: GeneralFilterModalProps) => {
     setTempSelectedWeightCategory('');
     setTempSelectedMinAge(0);
     setTempShowTop100(false);
-    setTempShowGamesWeSell(false);
+    setTempShowRetailGames(false); // Renamed
+    setTempShowPublisherOfTheMonth(false); // Reset new state
+    setTempShowNewArrivals(false); // Reset new state
     setTempShowStaffPicks(false);
     setTempSelectedCategories([]);
     setTempSelectedMechanisms([]);
@@ -346,11 +354,25 @@ const GeneralFilterModal = (props: GeneralFilterModalProps) => {
               BGG Top 100 Games
             </button>
             <button
-              onClick={() => setTempShowGamesWeSell(!tempShowGamesWeSell)}
-              className={`px-6 py-3 font-bold rounded-lg shadow-md transition duration-200 ${tempShowGamesWeSell ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-green-200 text-green-800 hover:bg-green-300'
+              onClick={() => setTempShowRetailGames(!tempShowRetailGames)} // Renamed
+              className={`px-6 py-3 font-bold rounded-lg shadow-md transition duration-200 ${tempShowRetailGames ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-green-200 text-green-800 hover:bg-green-300'
                 }`}
             >
-              Games We Sell
+              Try Before You Buy
+            </button>
+            <button
+              onClick={() => setTempShowPublisherOfTheMonth(!tempShowPublisherOfTheMonth)} // New button
+              className={`px-6 py-3 font-bold rounded-lg shadow-md transition duration-200 ${tempShowPublisherOfTheMonth ? 'bg-orange-600 text-white hover:bg-orange-700' : 'bg-orange-200 text-orange-800 hover:bg-orange-300'
+                }`}
+            >
+              Publisher of the Month
+            </button>
+            <button
+              onClick={() => setTempShowNewArrivals(!tempShowNewArrivals)} // New button
+              className={`px-6 py-3 font-bold rounded-lg shadow-md transition duration-200 ${tempShowNewArrivals ? 'bg-teal-600 text-white hover:bg-teal-700' : 'bg-teal-200 text-teal-800 hover:bg-teal-300'
+                }`}
+            >
+              New Arrivals
             </button>
             <button
               onClick={() => setTempShowStaffPicks(!tempShowStaffPicks)}
@@ -544,7 +566,9 @@ function App() {
   const [selectedWeightCategory, setSelectedWeightCategory] = useState('');
   const [selectedMinAge, setSelectedMinAge] = useState(0);
   const [showTop100, setShowTop100] = useState(false);
-  const [showGamesWeSell, setShowGamesWeSell] = useState(false);
+  const [showRetailGames, setShowRetailGames] = useState(false); // Renamed from showGamesWeSell
+  const [showPublisherOfTheMonth, setShowPublisherOfTheMonth] = useState(false); // New state
+  const [showNewArrivals, setShowNewArrivals] = useState(false); // New state
   const [showStaffPicks, setShowStaffPicks] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<Array<string>>([]);
   const [selectedMechanisms, setSelectedMechanisms] = useState<Array<string>>([]);
@@ -787,7 +811,9 @@ function App() {
         (selectedWeightCategory === 'High' && game.weight > 2.5 && game.weight <= 5);
       const matchesMinAge = selectedMinAge === 0 || (game.minAgeValue !== null && game.minAgeValue > 0 && game.minAgeValue <= selectedMinAge);
       const matchesTop100 = !showTop100 || (game.rank !== null && game.rank <= 100);
-      const matchesGamesWeSell = !showGamesWeSell || (game.retailPrice !== null);
+      const matchesRetailGames = !showRetailGames || (game.retailPrice !== null); // Renamed
+      const matchesPublisherOfTheMonth = !showPublisherOfTheMonth || (game.shelfLocation === 'Publisher of the Month'); // New filter
+      const matchesNewArrivals = !showNewArrivals || (game.shelfLocation === 'New Arrivals'); // New filter
       const matchesStaffPicks = !showStaffPicks || (game.staffpicksname !== null && game.staffpicksname !== '');
       const matchesCategories = selectedCategories.length === 0 || selectedCategories.some(cat => game.category.includes(cat));
       const matchesMechanisms = selectedMechanisms.length === 0 || selectedMechanisms.some(mech => game.mechanism.includes(mech));
@@ -798,9 +824,9 @@ function App() {
 
       const matchesNCDesignedGames = !showNCDesignedGames || (game.family && game.family.includes('Organizations: Game Designers of North Carolina'));
 
-      return matchesSearch && matchesPlayers && matchesTime && matchesWeightCategory && matchesMinAge && matchesTop100 && matchesGamesWeSell && matchesStaffPicks && matchesCategories && matchesMechanisms && matchesDesigners && matchesArtists && matchesPublishers && matchesNCDesignedGames && matchesYearPublished; // Include matchesYearPublished
+      return matchesSearch && matchesPlayers && matchesTime && matchesWeightCategory && matchesMinAge && matchesTop100 && matchesRetailGames && matchesPublisherOfTheMonth && matchesNewArrivals && matchesStaffPicks && matchesCategories && matchesMechanisms && matchesDesigners && matchesArtists && matchesPublishers && matchesNCDesignedGames && matchesYearPublished; // Include matchesYearPublished
     });
-  }, [searchTerm, desiredPlayers, desiredTime, selectedWeightCategory, selectedMinAge, showTop100, showGamesWeSell, showStaffPicks, selectedCategories, selectedMechanisms, selectedDesigners, selectedArtists, selectedPublishers, showNCDesignedGames, selectedYearPublished, boardGames]); // Add selectedYearPublished to dependencies
+  }, [searchTerm, desiredPlayers, desiredTime, selectedWeightCategory, selectedMinAge, showTop100, showRetailGames, showPublisherOfTheMonth, showNewArrivals, showStaffPicks, selectedCategories, selectedMechanisms, selectedDesigners, selectedArtists, selectedPublishers, showNCDesignedGames, selectedYearPublished, boardGames]); // Add selectedYearPublished to dependencies
 
   // Reset all filters (on main display)
   const handleResetFilters = () => {
@@ -810,7 +836,9 @@ function App() {
     setSelectedWeightCategory('');
     setSelectedMinAge(0);
     setShowTop100(false);
-    setShowGamesWeSell(false);
+    setShowRetailGames(false); // Renamed
+    setShowPublisherOfTheMonth(false); // Reset new state
+    setShowNewArrivals(false); // Reset new state
     setShowStaffPicks(false);
     setSelectedCategories([]);
     setSelectedMechanisms([]);
@@ -828,7 +856,9 @@ function App() {
     setSelectedWeightCategory(newFilters.selectedWeightCategory);
     setSelectedMinAge(newFilters.selectedMinAge); // Corrected: changed setTempSelectedMinAge to setSelectedMinAge
     setShowTop100(newFilters.showTop100);
-    setShowGamesWeSell(newFilters.showGamesWeSell);
+    setShowRetailGames(newFilters.showRetailGames); // Apply renamed state
+    setShowPublisherOfTheMonth(newFilters.showPublisherOfTheMonth); // Apply new state
+    setShowNewArrivals(newFilters.showNewArrivals); // Apply new state
     setShowStaffPicks(newFilters.showStaffPicks);
     setSelectedCategories(newFilters.selectedCategories);
     setSelectedMechanisms(newFilters.selectedMechanisms);
@@ -897,7 +927,7 @@ function App() {
         </div>
 
         {/* Display Applied Filters */}
-        {(searchTerm !== '' || desiredPlayers !== 0 || desiredTime !== 0 || selectedWeightCategory !== '' || selectedMinAge !== 0 || showTop100 || showGamesWeSell || showStaffPicks || showNCDesignedGames || selectedCategories.length > 0 || selectedMechanisms.length > 0 || selectedDesigners.length > 0 || selectedArtists.length > 0 || selectedPublishers.length > 0 || selectedYearPublished !== 0) && ( // Added selectedYearPublished
+        {(searchTerm !== '' || desiredPlayers !== 0 || desiredTime !== 0 || selectedWeightCategory !== '' || selectedMinAge !== 0 || showTop100 || showRetailGames || showPublisherOfTheMonth || showNewArrivals || showStaffPicks || showNCDesignedGames || selectedCategories.length > 0 || selectedMechanisms.length > 0 || selectedDesigners.length > 0 || selectedArtists.length > 0 || selectedPublishers.length > 0 || selectedYearPublished !== 0) && ( // Added selectedYearPublished
           <div className="bg-white p-6 rounded-xl shadow-lg mb-8">
             <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">Applied Filters</h3>
             <div className="flex flex-wrap justify-center gap-3">
@@ -931,9 +961,19 @@ function App() {
                   BGG Top 100
                 </span>
               )}
-              {showGamesWeSell && (
+              {showRetailGames && (
                 <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
-                  Games We Sell
+                  Try Before You Buy
+                </span>
+              )}
+              {showPublisherOfTheMonth && (
+                <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
+                  Publisher of the Month
+                </span>
+              )}
+              {showNewArrivals && (
+                <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
+                  New Arrivals
                 </span>
               )}
               {showStaffPicks && (
@@ -1064,232 +1104,239 @@ function App() {
                           game.weight > 2 && game.weight <= 2.5 ? 'Medium' :
                             game.weight > 2.5 && game.weight <= 5 ? 'High' :
                               ''}
-                    </span>
-                  </p>
-                )}
-                {/* BGG Rating */}
-                {game.average !== null && (
-                  <p className="text-gray-700 text-sm mb-1">
-                    <span className="font-semibold">BGG Rating:</span> {game.average.toFixed(2)}
-                  </p>
-                )}
-                {/* Retail Price - Prominent display */}
-                {game.retailPrice !== null && (
-                  <p className="text-green-700 text-lg font-extrabold mt-2">
-                    Price: ${game.retailPrice.toFixed(2)}
-                  </p>
-                )}
-                {/* Removed Location from game card display */}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </main>
-
-    {/* Expanded Game Modal */}
-    {selectedGame && (
-      <div
-        className="fixed inset-0 bg-black bg-opacity-75 z-50 overflow-y-auto" // Outer overlay is scrollable
-        onClick={() => setSelectedGame(null)} // Click outside to close
-      >
-        {/* Changed items-start to items-center */}
-        <div className="flex items-center justify-center min-h-full p-4">
-          <div
-            className="bg-white p-6 rounded-xl shadow-2xl max-w-4xl w-full mx-auto relative transform scale-95 md:scale-100 transition-transform duration-300 ease-out max-h-[95vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()} // Prevent clicks inside from closing modal
-          >
-            <button
-              onClick={() => setSelectedGame(null)}
-              // Increased size and padding for easier tapping
-              className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-4xl font-bold p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors duration-200 leading-none"
-              aria-label="Close"
-            >
-              &times;
-            </button>
-
-            <div className="flex flex-col md:flex-row items-start gap-6">
-              <div className="flex flex-col items-center md:items-start w-full md:w-1/2 lg:w-2/5">
-                <img
-                  src={selectedGame.imageUrl}
-                  alt={selectedGame.name}
-                  className="w-full h-auto object-contain rounded-lg shadow-lg mb-4 max-h-64"
-                  onError={(e: any) => {
-                    if (!e.target.src.includes('placehold.co')) {
-                      e.target.onerror = null;
-                      e.target.src = `https://placehold.co/400x400/cccccc/000000?text=${selectedGame.name ? selectedGame.name.substring(0, 10) : 'Game'}...`;
-                    }
-                  }}
-                />
-                {/* Location - Removed from here */}
-                {/* {selectedGame.shelfLocation && (
-                  <p className="mt-4 px-4 py-2 bg-blue-200 text-blue-800 font-bold rounded-full text-sm sm:text-base shadow-sm inline-block">
-                    Location: {selectedGame.shelfLocation}
-                  </p>
-                )} */}
-
-                {/* Categories - Moved under image, now horizontally scrollable */}
-                {selectedGame.category && selectedGame.category.length > 0 && (
-                  <div className="mt-4 w-full text-left">
-                    <span className="font-semibold text-gray-700">Categories:</span>
-                    <div className="flex flex-nowrap overflow-x-auto gap-2 mt-1 pb-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
-                      {selectedGame.category.map((cat, i) => (
-                        <span key={i} className="flex-shrink-0 px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">
-                          {cat}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Mechanisms - Moved under image, now horizontally scrollable */}
-                {selectedGame.mechanism && selectedGame.mechanism.length > 0 && (
-                  <div className="mt-2 w-full text-left">
-                    <span className="font-semibold text-gray-700">Mechanisms:</span>
-                    <div className="flex flex-nowrap overflow-x-auto gap-2 mt-1 pb-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
-                      {selectedGame.mechanism.map((mech, i) => (
-                        <span key={i} className="flex-shrink-0 px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">
-                          {mech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="text-left flex-1">
-                {/* Added pr-12 to prevent title from going behind close button */}
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-blue-800 mb-3 pr-12">{selectedGame.name}</h2>
-                {selectedGame.rank !== null && selectedGame.rank <= 100 && (
-                  <p className="mb-3 px-3 py-1 bg-yellow-400 text-yellow-900 font-bold rounded-full text-sm sm:text-base shadow-sm inline-block">
-                    BGG Top 100 Game
-                  </p>
-                )}
-
-                {/* Staff Pick Details in Modal */}
-                {selectedGame.staffpicksname && (
-                  <div className="mb-3 p-3 bg-pink-100 rounded-lg shadow-inner">
-                    <p className="text-pink-800 font-bold text-lg mb-1">
-                      ⭐ Staff Pick by {selectedGame.staffpicksname} ⭐
+                      </span>
                     </p>
-                    {selectedGame.staffpicksdescription && (
-                      <p className="text-pink-700 text-sm italic">
-                        "{selectedGame.staffpicksdescription}"
+                  )}
+                  {/* BGG Rating */}
+                  {game.average !== null && (
+                    <p className="text-gray-700 text-sm mb-1">
+                      <span className="font-semibold">BGG Rating:</span> {game.average.toFixed(2)}
+                    </p>
+                  )}
+                  {/* Retail Price - Prominent display */}
+                  {game.retailPrice !== null && (
+                    <p className="text-green-700 text-lg font-extrabold mt-2">
+                      Price: ${game.retailPrice.toFixed(2)}
+                    </p>
+                  )}
+                  {/* Location - Made prominent on the card */}
+                  {game.shelfLocation && (
+                    <p className="mt-3 px-3 py-1 bg-blue-200 text-blue-800 font-bold rounded-full text-xs sm:text-sm shadow-sm">
+                      Location: {game.shelfLocation}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* Expanded Game Modal */}
+      {selectedGame && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-75 z-50 overflow-y-auto" // Outer overlay is scrollable
+          onClick={() => setSelectedGame(null)} // Click outside to close
+        >
+          {/* Changed items-start to items-center */}
+          <div className="flex items-center justify-center min-h-full p-4">
+            <div
+              className="bg-white p-6 rounded-xl shadow-2xl max-w-4xl w-full mx-auto relative transform scale-95 md:scale-100 transition-transform duration-300 ease-out max-h-[95vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()} // Prevent clicks inside from closing modal
+            >
+              <button
+                onClick={() => setSelectedGame(null)}
+                // Increased size and padding for easier tapping
+                className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-4xl font-bold p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors duration-200 leading-none"
+                aria-label="Close"
+              >
+                &times;
+              </button>
+
+              <div className="flex flex-col md:flex-row items-start gap-6">
+                <div className="flex flex-col items-center md:items-start w-full md:w-1/2 lg:w-2/5">
+                  <img
+                    src={selectedGame.imageUrl}
+                    alt={selectedGame.name}
+                    className="w-full h-auto object-contain rounded-lg shadow-lg mb-4 max-h-64"
+                    onError={(e: any) => {
+                      if (!e.target.src.includes('placehold.co')) {
+                        e.target.onerror = null;
+                        e.target.src = `https://placehold.co/400x400/cccccc/000000?text=${selectedGame.name ? selectedGame.name.substring(0, 10) : 'Game'}...`;
+                      }
+                    }}
+                  />
+                  {/* Location - Re-added to modal */}
+                  {selectedGame.shelfLocation && (
+                    <p className="mt-4 px-4 py-2 bg-blue-200 text-blue-800 font-bold rounded-full text-sm sm:text-base shadow-sm inline-block">
+                      Location: {selectedGame.shelfLocation}
+                    </p>
+                  )}
+
+                  {/* Categories - Moved under image, now horizontally scrollable */}
+                  {selectedGame.category && selectedGame.category.length > 0 && (
+                    <div className="mt-4 w-full text-left">
+                      <span className="font-semibold text-gray-700">Categories:</span>
+                      <div className="flex flex-nowrap overflow-x-auto gap-2 mt-1 pb-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+                        {selectedGame.category.map((cat, i) => (
+                          <span key={i} className="flex-shrink-0 px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">
+                            {cat}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Mechanisms - Moved under image, now horizontally scrollable */}
+                  {selectedGame.mechanism && selectedGame.mechanism.length > 0 && (
+                    <div className="mt-2 w-full text-left">
+                      <span className="font-semibold text-gray-700">Mechanisms:</span>
+                      <div className="flex flex-nowrap overflow-x-auto gap-2 mt-1 pb-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+                        {selectedGame.mechanism.map((mech, i) => (
+                          <span key={i} className="flex-shrink-0 px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">
+                            {mech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="text-left flex-1">
+                  {/* Added pr-12 to prevent title from going behind close button */}
+                  <h2 className="text-3xl sm:text-4xl font-extrabold text-blue-800 mb-3 pr-12">{selectedGame.name}</h2>
+                  {selectedGame.rank !== null && selectedGame.rank <= 100 && (
+                    <p className="mb-3 px-3 py-1 bg-yellow-400 text-yellow-900 font-bold rounded-full text-sm sm:text-base shadow-sm inline-block">
+                      BGG Top 100 Game
+                    </p>
+                  )}
+
+                  {/* Staff Pick Details in Modal */}
+                  {selectedGame.staffpicksname && (
+                    <div className="mb-3 p-3 bg-pink-100 rounded-lg shadow-inner">
+                      <p className="text-pink-800 font-bold text-lg mb-1">
+                        ⭐ Staff Pick by {selectedGame.staffpicksname} ⭐
                       </p>
-                    )}
-                  </div>
-                )}
+                      {selectedGame.staffpicksdescription && (
+                        <p className="text-pink-700 text-sm italic">
+                          "{selectedGame.staffpicksdescription}"
+                        </p>
+                      )}
+                    </div>
+                  )}
 
-                {/* Designed in NC Label with Designer Name in modal */}
-                {selectedGame.family && selectedGame.family.includes('Organizations: Game Designers of North Carolina') && (
-                  <p className="mb-3 px-3 py-1 bg-[#155084] text-white font-bold rounded-full text-sm sm:text-base shadow-sm inline-block">
-                    Designed in North Carolina by {selectedGame.designer.join(', ')}
-                  </p>
-                )}
+                  {/* Designed in NC Label with Designer Name in modal */}
+                  {selectedGame.family && selectedGame.family.includes('Organizations: Game Designers of North Carolina') && (
+                    <p className="mb-3 px-3 py-1 bg-[#155084] text-white font-bold rounded-full text-sm sm:text-base shadow-sm inline-block">
+                      Designed in North Carolina by {selectedGame.designer.join(', ')}
+                    </p>
+                  )}
 
-                <p className="text-gray-700 text-lg sm:text-xl mb-2">
-                  <span className="font-semibold">Players:</span>{' '}
-                  {selectedGame.minPlayers === selectedGame.maxPlayers
-                    ? selectedGame.minPlayers
-                    : `${selectedGame.minPlayers} - ${selectedGame.maxPlayers}`}
-                </p>
-                <p className="text-gray-700 text-lg sm:text-xl mb-2">
-                  <span className="font-semibold">Time:</span>{' '}
-                  {selectedGame.minTime === selectedGame.maxTime
-                    ? `${selectedGame.minTime} min`
-                    : `${selectedGame.minTime} - ${selectedGame.maxTime} min`}
-                </p>
-                {/* Age Range in modal - Moved under Time and simplified display */}
-                {selectedGame.minAgeValue !== null && selectedGame.minAgeValue > 0 && ( // Only display if minAgeValue is greater than 0
                   <p className="text-gray-700 text-lg sm:text-xl mb-2">
-                    <span className="font-semibold">Ages:</span> {selectedGame.minAgeValue}+
+                    <span className="font-semibold">Players:</span>{' '}
+                    {selectedGame.minPlayers === selectedGame.maxPlayers
+                      ? selectedGame.minPlayers
+                      : `${selectedGame.minPlayers} - ${selectedGame.maxPlayers}`}
                   </p>
-                )}
-                {selectedGame.weight !== undefined && (
                   <p className="text-gray-700 text-lg sm:text-xl mb-2">
-                    <span className="font-semibold">Complexity:</span>{' '}
-                    <span
-                      style={{ color: getColorForWeight(selectedGame.weight), fontWeight: 'bold' }}
-                      title={`Complexity: ${selectedGame.weight.toFixed(1)} out of 5`}
-                    >
-                      {/* Convert numeric weight to Low/Medium/High for display */}
-                      {selectedGame.weight >= 1 && selectedGame.weight <= 2 ? 'Low' :
-                        selectedGame.weight > 2 && selectedGame.weight <= 2.5 ? 'Medium' :
-                          selectedGame.weight > 2.5 && selectedGame.weight <= 5 ? 'High' :
-                            ''}
-                    </span>
+                    <span className="font-semibold">Time:</span>{' '}
+                    {selectedGame.minTime === selectedGame.maxTime
+                      ? `${selectedGame.minTime} min`
+                      : `${selectedGame.minTime} - ${selectedGame.maxTime} min`}
                   </p>
-                )}
-                {/* BGG Rating */}
-                {selectedGame.average !== null && (
-                  <p className="text-gray-700 text-lg sm:text-xl mb-2">
-                    <span className="font-semibold">BGG Rating:</span> {selectedGame.average.toFixed(2)}
-                  </p>
-                )}
-                {/* Retail Price - Prominent display in modal */}
-                {selectedGame.retailPrice !== null && (
-                  <p className="text-green-700 text-xl sm:text-2xl font-extrabold mt-3">
-                    Price: ${selectedGame.retailPrice.toFixed(2)}
-                  </p>
-                )}
-                {selectedGame.yearPublished !== null && ( // Display yearPublished in modal
-                  <p className="text-gray-700 text-lg sm:text-xl mb-2">
-                    <span className="font-semibold">Published:</span> {selectedGame.yearPublished}
-                  </p>
-                )}
-                {/* Description in modal - now scrollable */}
-                {selectedGame.description && (
-                  <p className="text-gray-600 text-base sm:text-lg mt-4 leading-relaxed max-h-48 overflow-y-auto whitespace-pre-wrap pr-2 border border-gray-300 p-3 rounded-lg bg-gray-50">
-                    {selectedGame.description}
-                  </p>
-                )}
+                  {/* Age Range in modal - Moved under Time and simplified display */}
+                  {selectedGame.minAgeValue !== null && selectedGame.minAgeValue > 0 && ( // Only display if minAgeValue is greater than 0
+                    <p className="text-gray-700 text-lg sm:text-xl mb-2">
+                      <span className="font-semibold">Ages:</span> {selectedGame.minAgeValue}+
+                    </p>
+                  )}
+                  {selectedGame.weight !== undefined && (
+                    <p className="text-gray-700 text-lg sm:text-xl mb-2">
+                      <span className="font-semibold">Complexity:</span>{' '}
+                      <span
+                        style={{ color: getColorForWeight(selectedGame.weight), fontWeight: 'bold' }}
+                        title={`Complexity: ${selectedGame.weight.toFixed(1)} out of 5`}
+                      >
+                        {/* Convert numeric weight to Low/Medium/High for display */}
+                        {selectedGame.weight >= 1 && selectedGame.weight <= 2 ? 'Low' :
+                          selectedGame.weight > 2 && selectedGame.weight <= 2.5 ? 'Medium' :
+                            selectedGame.weight > 2.5 && selectedGame.weight <= 5 ? 'High' :
+                              ''}
+                      </span>
+                    </p>
+                  )}
+                  {/* BGG Rating */}
+                  {selectedGame.average !== null && (
+                    <p className="text-gray-700 text-lg sm:text-xl mb-2">
+                      <span className="font-semibold">BGG Rating:</span> {selectedGame.average.toFixed(2)}
+                    </p>
+                  )}
+                  {/* Retail Price - Prominent display in modal */}
+                  {selectedGame.retailPrice !== null && (
+                    <p className="text-green-700 text-xl sm:text-2xl font-extrabold mt-3">
+                      Price: ${selectedGame.retailPrice.toFixed(2)}
+                    </p>
+                  )}
+                  {selectedGame.yearPublished !== null && ( // Display yearPublished in modal
+                    <p className="text-gray-700 text-lg sm:text-xl mb-2">
+                      <span className="font-semibold">Published:</span> {selectedGame.yearPublished}
+                    </p>
+                  )}
+                  {/* Description in modal - now scrollable */}
+                  {selectedGame.description && (
+                    <p className="text-gray-600 text-base sm:text-lg mt-4 leading-relaxed max-h-48 overflow-y-auto whitespace-pre-wrap pr-2 border border-gray-300 p-3 rounded-lg bg-gray-50">
+                      {selectedGame.description}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    )
-    }
-
-    {/* General Filter Modal */}
-    {
-      showGeneralFilterModal && (
-        <GeneralFilterModal
-          currentFilters={{
-            searchTerm,
-            desiredPlayers,
-            desiredTime,
-            selectedWeightCategory,
-            selectedMinAge,
-            showTop100,
-            showGamesWeSell,
-            showStaffPicks,
-            selectedCategories,
-            selectedMechanisms,
-            selectedDesigners,
-            selectedArtists,
-            selectedPublishers,
-            showNCDesignedGames,
-            selectedYearPublished,
-          }}
-          uniqueCategories={uniqueCategories}
-          uniqueMechanisms={uniqueMechanisms}
-          uniqueDesigners={uniqueDesigners}
-          uniqueArtists={uniqueArtists}
-          uniquePublishers={uniquePublishers}
-          uniqueYearsPublished={uniqueYearsPublished} // Pass uniqueYearsPublished
-          onApplyFilters={applyFiltersFromModal}
-          onClose={() => setShowGeneralFilterModal(false)}
-        />
       )
-    }
+      }
 
-    {/* Footer */}
-    <footer className="text-center mt-8 text-gray-600 text-sm flex-shrink-0">
-      <p>&copy; 2025 Well Played Board Game Cafe. All rights reserved.</p>
-    </footer>
-  </div >
-);
+      {/* General Filter Modal */}
+      {
+        showGeneralFilterModal && (
+          <GeneralFilterModal
+            currentFilters={{
+              searchTerm,
+              desiredPlayers,
+              desiredTime,
+              selectedWeightCategory,
+              selectedMinAge,
+              showTop100,
+              showRetailGames, // Renamed
+              showPublisherOfTheMonth, // New filter
+              showNewArrivals, // New filter
+              showStaffPicks,
+              selectedCategories,
+              selectedMechanisms,
+              selectedDesigners,
+              selectedArtists,
+              selectedPublishers,
+              showNCDesignedGames,
+              selectedYearPublished,
+            }}
+            uniqueCategories={uniqueCategories}
+            uniqueMechanisms={uniqueMechanisms}
+            uniqueDesigners={uniqueDesigners}
+            uniqueArtists={uniqueArtists}
+            uniquePublishers={uniquePublishers}
+            uniqueYearsPublished={uniqueYearsPublished} // Pass uniqueYearsPublished
+            onApplyFilters={applyFiltersFromModal}
+            onClose={() => setShowGeneralFilterModal(false)}
+          />
+        )
+      }
+
+      {/* Footer */}
+      <footer className="text-center mt-8 text-gray-600 text-sm flex-shrink-0">
+        <p>&copy; 2025 Well Played Board Game Cafe. All rights reserved.</p>
+      </footer>
+    </div >
+  );
 }
 
 export default App;
