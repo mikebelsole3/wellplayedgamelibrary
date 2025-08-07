@@ -33,7 +33,7 @@ type BoardGame = {
 
 // IMPORTANT: Replace this with the actual URL of your published Google Sheet data (e.g., as CSV)
 // You will need to replace 'YOUR_SHEET_ID' and potentially 'gid' if you have multiple sheets.
-const GOOGLE_SHEET_DATA_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ82tONzKAbS4g8sfREBApuIw7f8WfIFN2z98r6Br8FEWw8jZK3dCRZXl5XbY8SZbRMLUNp8H7ov99W/pub?gid=202930632&single=true&output=csv';
+const GOOGLE_SHEET_DATA_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQAZh8leZ1fjF9dDXaZbD31Bz_9yLAy9GWcW3_YRjKszaqqEadpdi4egRrh38ChCRAMpTbVhU-98wEi/pub?gid=161508505&single=true&output=csv';
 
 // Utility function to get unique values for filters and sort them alphabetically, ignoring articles
 const getUniqueValues = (data: Array<BoardGame>, key: keyof BoardGame) => {
@@ -855,9 +855,9 @@ function App() {
       {/* Header */}
       <header className="text-center mb-8 bg-white p-6 rounded-xl shadow-lg flex-shrink-0">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-blue-800 mb-2">
-          🎲 Tabletop Inn Game Library 📚
+          🎲 Well Played Board Game Cafe Library 📚
         </h1>
-        <p className="text-lg text-gray-700">Explore our collection of over 800 board games!</p>
+        <p className="text-lg text-gray-700">Explore our collection of over 600 board games!</p>
       </header>
 
       {/* Main content area - always scrollable internally */}
@@ -1286,7 +1286,7 @@ function App() {
 
     {/* Footer */}
     <footer className="text-center mt-8 text-gray-600 text-sm flex-shrink-0">
-      <p>&copy; 2025 Tabletop Inn. All rights reserved.</p>
+      <p>&copy; 2025 Well Played Board Game Cafe. All rights reserved.</p>
     </footer>
   </div >
 );
